@@ -10,6 +10,8 @@
    而在forward中使用 nn.functional 代替
 '''
 from __future__ import print_function
+import pdb
+
 import torch as t
 from torch.autograd import Variable
 
@@ -63,11 +65,12 @@ def main():
     out = net(input)
     print(out.size())
 
+    pdb.set_trace()
     # 将net中所有 “可学习参数” 的梯度清零
-    # net.zero_grad()
+    net.zero_grad()
     # 进行反向传播
-    # out.backward(Variable(t.ones(1, 10)))
-    # print("the backward data is : {}".format(input.grad))
+    out.backward(Variable(t.ones(1, 10)))
+    print("the backward data is : {}".format(input.grad))
     # 损失函数 调用
     output = net(input)
     target = Variable(t.arange(0, 10))
