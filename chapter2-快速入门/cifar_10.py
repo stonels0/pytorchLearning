@@ -98,7 +98,8 @@ def testCode():
             # 把 Tensor 转化到 GPU上
             if t.cuda.is_available():
                 net.cuda()
-                images = inputs.cuda()  # 转化为 GPU Tensor
+                images = inputs.cuda(
+                )  # cuda函数可以指定GPU（传输参数即可，如inputs.cuda(1)-把inputs转为GPU1上的tensor,
                 labels = labels.cuda()  # 转化为 GPU Tensor
                 output = net(Variable(images))  # 转化为 GPU Tensor
                 loss = criterion(
