@@ -52,9 +52,29 @@ def tensorTest(parameter_list):
     a > 1  # 返回 torch.ByteTensor 对象
     a[a > 1]  # 等价于a.masked_select(a>1), 选择结果与原tensor不共享内存空间
 
+    ###gather 取dim维度上index的值
+    a = t.arange(0, 16).view(4, 4)
+    ## 取对角线上的数字(输出size = index的size)
+    index = t.LongTensor([[0, 1, 2, 3]])
+    diaglog = a.gather(0, index)
+
+    ## 选取两个对角线上的元素
+    index = t.LongTensor([[0, 1, 2, 3], [3, 2, 1, 0]]).t()
+    b = a.gather(1, index)
+
     ### 类型转化问题
     ## numpy 和 Tensor变量之间的转化
     b.tolist()
+
+    ## 广播操作
+    a = t.ones(3, 2)  # a.shape = torch.Size([3, 2])
+    b = t.zeros(2, 3, 1)  # b.shape = torch.Size([2, 3, 1])
+    # 自动广播法则
+    # 第一步：a是2维,b是3维，所以先在较小的a前面补1 ，
+    #            即：a.unsqueeze(0)，a的形状变成（1，3，2），b的形状是（2，3，1）,
+    # 第二步: a和b在第一维和第三维形状不一样，其中一个为1 ，
+    #            可以利用广播法则扩展，两个形状都变成了（2，3，2）
+    a + b
 
 
 def main():
